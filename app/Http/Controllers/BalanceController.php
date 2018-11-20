@@ -107,7 +107,7 @@ class BalanceController extends Controller
         {
             if(substr($price->dst,'0','2') === '01')
             {
-                $this->total = $this->total + ceil($price->billsec/10)*6.8;
+                $this->total = $this->total + ceil($price->billsec/10)*5.5;
             }
             if(substr($price->dst, 0,2)==='86')
             {

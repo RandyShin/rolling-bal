@@ -48,9 +48,6 @@ class BalanceController extends Controller
             ->whereRaw('LENGTH(dst) != 4')
             ->get();
 
-        dd(auth()->user()->id);
-
-
         $cnt = $cdrs->total();
 
         $this->getTotal();

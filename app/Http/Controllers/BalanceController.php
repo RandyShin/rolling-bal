@@ -29,7 +29,7 @@ class BalanceController extends Controller
     }
 
     function queryList() {
-        $cdrs = Cdr::where('dcontext', '=', 'SMILan_rulematch')
+        $cdrs = Cdr::where('dcontext', '=', 'rolling_rulematch')
             ->whereRaw('LENGTH(dst) != 4')
             ->where('calldate','>=', $this->dateFrom . ' 00:00:00')
             ->where('calldate','<=', $this->dateTo . ' 23:59:59');
@@ -44,9 +44,11 @@ class BalanceController extends Controller
         $cdrs = $this->queryList();
         $cdrs = $cdrs->orderBy('calldate', 'desc')->paginate(15);
 
-        $prices = Cdr::where('dcontext', '=', 'SMILan_rulematch')
+        $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
             ->whereRaw('LENGTH(dst) != 4')
             ->get();
+
+        dd(auth()->user()->id);
 
 
         $cnt = $cdrs->total();
@@ -56,7 +58,7 @@ class BalanceController extends Controller
         // get total price result
         $total = $this->total;
 
-        $deposits_total  = Deposit::sum('amount');
+        $deposits_total  = Deposit::where('company','rolling')->sum('amount');
 
         // get total price result
 
@@ -98,7 +100,7 @@ class BalanceController extends Controller
 
     private function getTotal()
     {
-        $prices = Cdr::where('dcontext', '=', 'SMILan_rulematch')
+        $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
             ->whereRaw('LENGTH(dst) != 4')
             ->get();
 

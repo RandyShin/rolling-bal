@@ -95,7 +95,7 @@ class BalanceController extends Controller
 
 
 
-    private function getTotal()
+    private function getTotal()  //if want to change list price then change CDR model.
     {
         $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
             ->whereRaw('LENGTH(dst) != 4')

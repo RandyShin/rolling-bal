@@ -43,7 +43,7 @@ class Cdr extends Model
     public function getPrice()
     {
         if(substr($this->dst, 0,2)==='01'){
-            return ceil($this->billsec/10)*6.8;
+            return ceil($this->billsec/10)*5.5;
         }
         if(substr($this->dst, 0,2)==='86'){
             return ceil($this->billsec/60)*22;

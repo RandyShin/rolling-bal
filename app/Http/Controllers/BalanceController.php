@@ -44,9 +44,9 @@ class BalanceController extends Controller
         $cdrs = $this->queryList();
         $cdrs = $cdrs->orderBy('calldate', 'desc')->paginate(15);
 
-        $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
-            ->whereRaw('LENGTH(dst) != 4')
-            ->get();
+//        $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
+//            ->whereRaw('LENGTH(dst) != 4')
+//            ->get();
 
         $cnt = $cdrs->total();
 
@@ -99,6 +99,7 @@ class BalanceController extends Controller
     {
         $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
             ->whereRaw('LENGTH(dst) != 4')
+            ->select('billsec','dst')
             ->get();
 
         $this->total = 0;

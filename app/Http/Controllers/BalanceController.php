@@ -36,13 +36,14 @@ class BalanceController extends Controller
 
         return $cdrs;
     }
+
     public function index(Request $request)
     {
 
         $params = $request->all();
-
-        $cdrs = $this->queryList();
-        $cdrs = $cdrs->orderBy('calldate', 'desc')->paginate(15);
+        
+	$cdrs = $this->queryList();
+	$cdrs = $cdrs->orderBy('calldate', 'desc')->paginate(15);
 
 //        $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
 //            ->whereRaw('LENGTH(dst) != 4')
@@ -58,7 +59,6 @@ class BalanceController extends Controller
         $deposits_total  = Deposit::where('company','rolling')->sum('amount');
 
         // get total price result
-
 
         return view('list.index', compact('params', 'cdrs', 'cnt', 'total', 'deposits_total'));
     }
@@ -99,16 +99,17 @@ class BalanceController extends Controller
     {
         $prices = Cdr::where('dcontext', '=', 'rolling_rulematch')
             ->whereRaw('LENGTH(dst) != 4')
+	    ->where('calldate','>=','2020-01-01 00:00:00') // add this condition to speedup the website, It will only get the data starting year 2020
             ->select('billsec','dst')
-            ->get();
+	    ->get();
 
         $this->total = 0;
-
+	
         foreach ($prices as $price)
         {
             if(substr($price->dst,'0','2') === '01')
             {
-                $this->total = $this->total + ceil($price->billsec/10)*5.5;
+                $this->total = $this->total + ceil($price->billsec/10)*5.2;
             }
             if(substr($price->dst, 0,2)==='86')
             {
@@ -123,7 +124,7 @@ class BalanceController extends Controller
                 $this->total = $this->total + ceil($price->billsec/180)*32;
             }
         }
-
+	
     }
 
 }
